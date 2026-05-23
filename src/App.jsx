@@ -1,25 +1,185 @@
 import { useState } from "react";
 
 export default function App() {
+  const whatsappNumber = "919322705535";
+
   const services = [
-    { name: "New FSSAI Registration", price: "₹1,499" },
-    { name: "FSSAI Renewal", price: "₹999" },
-    { name: "FSSAI Modification", price: "₹999" },
-    { name: "Water Testing Report", price: "₹2,999" },
-    { name: "Website Designing", price: "₹4,999" },
+    {
+      name: "New FSSAI Registration",
+      price: "₹1,499",
+      fields: ["businessName", "ownerName", "phone", "email", "address"],
+    },
+    {
+      name: "FSSAI Renewal",
+      price: "₹999",
+      fields: ["licenseNumber", "businessName", "ownerName", "phone", "expiryDate"],
+    },
+    {
+      name: "FSSAI Modification",
+      price: "₹999",
+      fields: ["licenseNumber", "businessName", "ownerName", "phone", "changesRequired"],
+    },
+    {
+      name: "Water Testing Report",
+      price: "₹2,999",
+      fields: ["businessName", "ownerName", "phone", "city", "address"],
+    },
+    {
+      name: "Website Designing",
+      price: "₹4,999",
+      fields: ["businessName", "ownerName", "phone", "email", "websiteType", "message"],
+    },
   ];
 
   const [selectedService, setSelectedService] = useState(services[0]);
+  const [success, setSuccess] = useState(false);
+
+  const [formData, setFormData] = useState({
+    businessName: "",
+    ownerName: "",
+    phone: "",
+    email: "",
+    address: "",
+    licenseNumber: "",
+    expiryDate: "",
+    changesRequired: "",
+    city: "",
+    websiteType: "",
+    message: "",
+  });
+
+  const fieldLabels = {
+    businessName: "Business / Firm Name",
+    ownerName: "Owner Name",
+    phone: "Mobile Number",
+    email: "Email Address",
+    address: "Full Address",
+    licenseNumber: "FSSAI License Number",
+    expiryDate: "License Expiry Date",
+    changesRequired: "Changes Required",
+    city: "City",
+    websiteType: "Website Type",
+    message: "Message / Requirement",
+  };
 
   const selectService = (service) => {
     setSelectedService(service);
+    setSuccess(false);
     document.getElementById("apply").scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleChange = (e) => {
+    setSuccess(false);
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleServiceChange = (e) => {
+    const service = services.find((item) => item.name === e.target.value);
+    setSelectedService(service);
+    setSuccess(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let details = "";
+
+    selectedService.fields.forEach((field) => {
+      details += `${fieldLabels[field]}: ${formData[field] || "-"}\n`;
+    });
+
+    const whatsappMessage = `New Service Application
+
+Service: ${selectedService.name}
+Price: ${selectedService.price}
+
+Client Details:
+${details}
+
+Confirmation Message:
+Stay tuned. Our executive will reach you soon with details about ${selectedService.name}.`;
+
+    window.open(
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+        whatsappMessage
+      )}`,
+      "_blank"
+    );
+
+    setSuccess(true);
+  };
+
+  const renderField = (field) => {
+    if (field === "expiryDate") {
+      return (
+        <input
+          key={field}
+          type="date"
+          name={field}
+          value={formData[field]}
+          onChange={handleChange}
+          required
+          style={inputStyle}
+        />
+      );
+    }
+
+    if (field === "changesRequired" || field === "address" || field === "message") {
+      return (
+        <textarea
+          key={field}
+          name={field}
+          placeholder={fieldLabels[field]}
+          rows="4"
+          value={formData[field]}
+          onChange={handleChange}
+          required
+          style={inputStyle}
+        />
+      );
+    }
+
+    if (field === "websiteType") {
+      return (
+        <select
+          key={field}
+          name={field}
+          value={formData[field]}
+          onChange={handleChange}
+          required
+          style={inputStyle}
+        >
+          <option value="">Select Website Type</option>
+          <option>Business Website</option>
+          <option>E-commerce Website</option>
+          <option>Portfolio Website</option>
+          <option>Landing Page</option>
+          <option>Other</option>
+        </select>
+      );
+    }
+
+    return (
+      <input
+        key={field}
+        type={field === "email" ? "email" : "text"}
+        name={field}
+        placeholder={fieldLabels[field]}
+        value={formData[field]}
+        onChange={handleChange}
+        required={field !== "email"}
+        style={inputStyle}
+      />
+    );
   };
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", color: "#102A43" }}>
       <header style={headerStyle}>
-        <img src="/logo.jpeg" alt="Logo" style={{ height: "70px" }} />
+        <img src="/logo.jpeg" alt="RegFast India" style={{ height: "70px" }} />
 
         <nav style={{ display: "flex", gap: "25px", fontWeight: "600" }}>
           <a href="#" style={navStyle}>Home</a>
@@ -28,7 +188,7 @@ export default function App() {
           <a href="#contact" style={navStyle}>Contact</a>
         </nav>
 
-        <a href="#apply" style={callBtn}>Apply Now</a>
+        <a href="#services" style={callBtn}>Apply Now</a>
       </header>
 
       <section style={heroStyle}>
@@ -51,7 +211,7 @@ export default function App() {
         </div>
 
         <div style={heroCard}>
-          <img src="/logo.jpeg" alt="Logo" style={{ width: "260px" }} />
+          <img src="/logo.jpeg" alt="RegFast India Logo" style={{ width: "260px" }} />
           <h2 style={{ color: "#0F3D73" }}>Fast & Reliable Service</h2>
           <p style={{ color: "#64748b" }}>
             Choose service, check price, submit details and get support.
@@ -63,6 +223,10 @@ export default function App() {
         <h2 style={sectionTitle}>
           Our <span style={{ color: "#F26A1B" }}>Services</span>
         </h2>
+
+        <p style={{ textAlign: "center", color: "#64748b", fontSize: "18px" }}>
+          Select a service and the correct form will open with the price.
+        </p>
 
         <div style={serviceGrid}>
           {services.map((service, index) => (
@@ -95,39 +259,37 @@ export default function App() {
             <b>Service Fee:</b> {selectedService.price}
           </div>
 
-          <input placeholder="Full Name" style={inputStyle} />
-          <input placeholder="Mobile Number" style={inputStyle} />
-          <input placeholder="Email Address" style={inputStyle} />
+          <form onSubmit={handleSubmit}>
+            <select
+              style={inputStyle}
+              value={selectedService.name}
+              onChange={handleServiceChange}
+            >
+              {services.map((service, index) => (
+                <option key={index}>{service.name}</option>
+              ))}
+            </select>
 
-          <select
-            style={inputStyle}
-            value={selectedService.name}
-            onChange={(e) => {
-              const service = services.find((s) => s.name === e.target.value);
-              setSelectedService(service);
-            }}
-          >
-            {services.map((service, index) => (
-              <option key={index}>{service.name}</option>
-            ))}
-          </select>
+            {selectedService.fields.map((field) => renderField(field))}
 
-          <textarea
-            placeholder="Address / Message"
-            rows="4"
-            style={inputStyle}
-          ></textarea>
+            <button type="submit" style={submitBtn}>
+              Submit Application on WhatsApp
+            </button>
 
-          <button style={submitBtn}>
-            Submit Application
-          </button>
+            {success && (
+              <p style={successMessage}>
+                Thank you! Stay tuned, our executive will reach you soon with
+                details about your selected service: {selectedService.name}.
+              </p>
+            )}
+          </form>
         </div>
       </section>
 
       <footer id="contact" style={footerStyle}>
-        <img src="/logo.jpeg" alt="Logo" style={footerLogo} />
+        <img src="/logo.jpeg" alt="RegFast India" style={footerLogo} />
 
-        <p>Phone: +91 9876543210 | Email: support@yourbusiness.com</p>
+        <p>WhatsApp: +91 9322705535 | Email: Regfastindia@gmail.com</p>
 
         <p style={disclaimerStyle}>
           Disclaimer: We are a private consultancy service provider and are not
@@ -266,6 +428,7 @@ const inputStyle = {
   border: "1px solid #CBD5E1",
   borderRadius: "8px",
   fontSize: "16px",
+  boxSizing: "border-box",
 };
 
 const submitBtn = {
@@ -277,6 +440,16 @@ const submitBtn = {
   borderRadius: "10px",
   fontSize: "18px",
   fontWeight: "800",
+  cursor: "pointer",
+};
+
+const successMessage = {
+  color: "#15803d",
+  background: "#dcfce7",
+  padding: "14px",
+  borderRadius: "10px",
+  marginTop: "15px",
+  fontWeight: "700",
 };
 
 const footerStyle = {
