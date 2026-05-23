@@ -1,372 +1,221 @@
 export default function App() {
   const services = [
-    "Learner License",
-    "New Driving License",
+    "Driving License",
+    "Vehicle Registration",
+    "RC Transfer",
     "License Renewal",
     "Duplicate License",
-    "RC Transfer",
-    "International Driving Permit",
+    "Insurance Services",
   ];
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif" }}>
-      
-      {/* Header */}
-      <header
-        style={{
-          background: "#0f172a",
-          color: "white",
-          padding: "15px 40px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h2>DriveAssist</h2>
+    <div style={{ fontFamily: "Arial, sans-serif", color: "#102A43" }}>
+      <header style={{
+        background: "white",
+        padding: "15px 8%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+        position: "sticky",
+        top: 0,
+        zIndex: 10
+      }}>
+        <img src="/logo.jpeg" alt="RegFast India" style={{ height: "70px" }} />
 
-        <nav style={{ display: "flex", gap: "20px" }}>
-          <a href="#" style={{ color: "white", textDecoration: "none" }}>
-            Home
-          </a>
-
-          <a
-            href="#services"
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            Services
-          </a>
-
-          <a
-            href="#about"
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            About
-          </a>
-
-          <a
-            href="#contact"
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            Contact
-          </a>
+        <nav style={{ display: "flex", gap: "25px", fontWeight: "600" }}>
+          <a href="#" style={navStyle}>Home</a>
+          <a href="#services" style={navStyle}>Services</a>
+          <a href="#apply" style={navStyle}>Apply</a>
+          <a href="#contact" style={navStyle}>Contact</a>
         </nav>
+
+        <a href="tel:+919876543210" style={callBtn}>Call Now</a>
       </header>
 
-      {/* Hero Section */}
-      <section
-        style={{
-          background: "#eff6ff",
-          padding: "80px 40px",
-          textAlign: "center",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: "48px",
-            color: "#1e3a8a",
-            marginBottom: "20px",
-          }}
-        >
-          Fast & Reliable Driving License Assistance
-        </h1>
+      <section style={{
+        padding: "90px 8%",
+        background: "linear-gradient(120deg, #FFF7ED 0%, #FFFFFF 45%, #EAF3FF 100%)",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+        gap: "40px",
+        alignItems: "center"
+      }}>
+        <div>
+          <p style={{ color: "#F26A1B", fontWeight: "800", letterSpacing: "2px" }}>
+            FAST • RELIABLE • HASSLE-FREE
+          </p>
 
-        <p
-          style={{
-            fontSize: "20px",
-            color: "#475569",
-            maxWidth: "700px",
-            margin: "0 auto 30px",
-          }}
-        >
-          We help customers with learner licenses, renewals,
-          duplicate licenses, and RTO documentation support.
-        </p>
+          <h1 style={{
+            fontSize: "56px",
+            lineHeight: "1.1",
+            color: "#0F3D73",
+            marginBottom: "20px"
+          }}>
+            All RTO Services <br />
+            Under <span style={{ color: "#F26A1B" }}>One Roof</span>
+          </h1>
 
-        <a href="#apply-form">
-          <button
-            style={{
-              background: "#2563eb",
-              color: "white",
-              border: "none",
-              padding: "14px 30px",
-              borderRadius: "8px",
-              fontSize: "18px",
-              cursor: "pointer",
-            }}
-          >
-            Apply Now
-          </button>
-        </a>
+          <p style={{ fontSize: "20px", color: "#475569", lineHeight: "1.7" }}>
+            We provide private assistance for driving license, vehicle registration,
+            RC transfer, renewal and documentation support.
+          </p>
+
+          <div style={{ display: "flex", gap: "15px", marginTop: "30px" }}>
+            <a href="#apply" style={primaryBtn}>Apply Now</a>
+            <a href="https://wa.me/919876543210" style={whatsappBtn}>WhatsApp</a>
+          </div>
+        </div>
+
+        <div style={{
+          background: "white",
+          padding: "30px",
+          borderRadius: "24px",
+          boxShadow: "0 15px 35px rgba(15,61,115,0.15)",
+          textAlign: "center"
+        }}>
+          <img src="/logo.jpeg" alt="RegFast India Logo" style={{ width: "260px" }} />
+          <h2 style={{ color: "#0F3D73" }}>Trusted RTO Assistance</h2>
+          <p style={{ color: "#64748b" }}>
+            Quick support for license and vehicle-related services.
+          </p>
+        </div>
       </section>
 
-      {/* Services */}
-      <section
-        id="services"
-        style={{ padding: "70px 40px" }}
-      >
-        <h2
-          style={{
-            textAlign: "center",
-            fontSize: "38px",
-            marginBottom: "50px",
-            color: "#1e3a8a",
-          }}
-        >
-          Our Services
+      <section id="services" style={{ padding: "70px 8%" }}>
+        <h2 style={{ textAlign: "center", fontSize: "42px", color: "#0F3D73" }}>
+          Our <span style={{ color: "#F26A1B" }}>Services</span>
         </h2>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "25px",
-          }}
-        >
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "25px",
+          marginTop: "40px"
+        }}>
           {services.map((service, index) => (
-            <div
-              key={index}
-              style={{
-                background: "#f8fafc",
-                padding: "30px",
-                borderRadius: "16px",
-                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-              }}
-            >
-              <h3
-                style={{
-                  color: "#1e3a8a",
-                  marginBottom: "15px",
-                }}
-              >
-                {service}
-              </h3>
-
-              <p style={{ color: "#475569" }}>
-                Professional assistance for{" "}
-                {service.toLowerCase()}.
+            <div key={index} style={{
+              padding: "30px",
+              borderRadius: "18px",
+              background: "white",
+              boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
+              borderTop: "5px solid #F26A1B"
+            }}>
+              <h3 style={{ color: "#0F3D73" }}>{service}</h3>
+              <p style={{ color: "#64748b" }}>
+                Professional documentation and application assistance for {service.toLowerCase()}.
               </p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* About */}
-      <section
-        id="about"
-        style={{
-          background: "#f1f5f9",
-          padding: "70px 40px",
-          textAlign: "center",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "38px",
-            color: "#1e3a8a",
-            marginBottom: "20px",
-          }}
-        >
-          About Us
-        </h2>
-
-        <p
-          style={{
-            maxWidth: "800px",
-            margin: "auto",
-            fontSize: "18px",
-            color: "#475569",
-            lineHeight: "1.8",
-          }}
-        >
-          We are a private consultancy service provider helping
-          customers with driving-license-related applications
-          and documentation support services.
-        </p>
-      </section>
-
-      {/* Apply Form */}
-      <section
-        id="apply-form"
-        style={{
-          background: "#eff6ff",
-          padding: "70px 20px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "700px",
-            margin: "auto",
-            background: "white",
-            padding: "40px",
-            borderRadius: "16px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h2
-            style={{
-              textAlign: "center",
-              marginBottom: "30px",
-              color: "#1e3a8a",
-            }}
-          >
-            Apply For Driving License Service
+      <section id="apply" style={{
+        background: "#0F3D73",
+        padding: "70px 20px"
+      }}>
+        <div style={{
+          maxWidth: "700px",
+          margin: "auto",
+          background: "white",
+          padding: "40px",
+          borderRadius: "20px"
+        }}>
+          <h2 style={{ textAlign: "center", color: "#0F3D73" }}>
+            Apply For Service
           </h2>
 
-          <form>
-            <div style={{ marginBottom: "20px" }}>
-              <label>Full Name</label>
+          <input placeholder="Full Name" style={inputStyle} />
+          <input placeholder="Mobile Number" style={inputStyle} />
+          <input placeholder="Email Address" style={inputStyle} />
 
-              <input
-                type="text"
-                placeholder="Enter your full name"
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  marginTop: "8px",
-                }}
-              />
-            </div>
+          <select style={inputStyle}>
+            <option>Driving License</option>
+            <option>Vehicle Registration</option>
+            <option>RC Transfer</option>
+            <option>License Renewal</option>
+            <option>Duplicate License</option>
+          </select>
 
-            <div style={{ marginBottom: "20px" }}>
-              <label>Mobile Number</label>
+          <textarea placeholder="Address / Message" rows="4" style={inputStyle}></textarea>
 
-              <input
-                type="text"
-                placeholder="Enter mobile number"
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  marginTop: "8px",
-                }}
-              />
-            </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <label>Email Address</label>
-
-              <input
-                type="email"
-                placeholder="Enter email"
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  marginTop: "8px",
-                }}
-              />
-            </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <label>Select Service</label>
-
-              <select
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  marginTop: "8px",
-                }}
-              >
-                <option>Learner License</option>
-                <option>New Driving License</option>
-                <option>License Renewal</option>
-                <option>Duplicate License</option>
-                <option>RC Transfer</option>
-              </select>
-            </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <label>Address</label>
-
-              <textarea
-                rows="4"
-                placeholder="Enter your address"
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  marginTop: "8px",
-                }}
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              style={{
-                width: "100%",
-                background: "#2563eb",
-                color: "white",
-                padding: "14px",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "18px",
-                cursor: "pointer",
-              }}
-            >
-              Submit Application
-            </button>
-          </form>
+          <button style={{
+            width: "100%",
+            background: "#F26A1B",
+            color: "white",
+            border: "none",
+            padding: "15px",
+            borderRadius: "10px",
+            fontSize: "18px",
+            fontWeight: "800"
+          }}>
+            Submit Application
+          </button>
         </div>
       </section>
 
-      {/* Contact */}
-      <section
-        id="contact"
-        style={{
-          padding: "70px 40px",
-          textAlign: "center",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "38px",
-            color: "#1e3a8a",
-            marginBottom: "20px",
-          }}
-        >
-          Contact Us
-        </h2>
+      <footer id="contact" style={{
+        background: "#071B33",
+        color: "white",
+        textAlign: "center",
+        padding: "40px 8%"
+      }}>
+        <img src="/logo.jpeg" alt="RegFast India" style={{
+          height: "75px",
+          background: "white",
+          padding: "8px",
+          borderRadius: "10px"
+        }} />
 
-        <p
-          style={{
-            fontSize: "20px",
-            color: "#475569",
-          }}
-        >
-          Phone: +91 9876543210
-        </p>
+        <p>Phone: +91 9876543210 | Email: support@regfastindia.com</p>
 
-        <p
-          style={{
-            fontSize: "20px",
-            color: "#475569",
-          }}
-        >
-          Email: support@driveassist.com
-        </p>
-      </section>
-
-      {/* Footer */}
-      <footer
-        style={{
-          background: "#020617",
-          color: "white",
-          padding: "30px",
-          textAlign: "center",
-        }}
-      >
-        <p>© 2026 DriveAssist. All Rights Reserved.</p>
-
-        <p
-          style={{
-            marginTop: "15px",
-            color: "#94a3b8",
-            maxWidth: "800px",
-            marginInline: "auto",
-          }}
-        >
-          Disclaimer: We are a private consultancy service provider and
-          are not affiliated with any government authority or RTO office.
+        <p style={{ color: "#CBD5E1", maxWidth: "850px", margin: "20px auto" }}>
+          Disclaimer: We are a private consultancy service provider and are not affiliated
+          with any government authority, RTO office, or transport department.
         </p>
       </footer>
     </div>
   );
 }
+
+const navStyle = {
+  color: "#0F3D73",
+  textDecoration: "none",
+};
+
+const callBtn = {
+  background: "#F26A1B",
+  color: "white",
+  padding: "12px 22px",
+  borderRadius: "8px",
+  textDecoration: "none",
+  fontWeight: "700",
+};
+
+const primaryBtn = {
+  background: "#F26A1B",
+  color: "white",
+  padding: "15px 35px",
+  borderRadius: "10px",
+  textDecoration: "none",
+  fontWeight: "800",
+};
+
+const whatsappBtn = {
+  background: "white",
+  color: "#16A34A",
+  padding: "15px 35px",
+  borderRadius: "10px",
+  textDecoration: "none",
+  fontWeight: "800",
+  border: "2px solid #16A34A",
+};
+
+const inputStyle = {
+  width: "100%",
+  padding: "14px",
+  marginBottom: "18px",
+  border: "1px solid #CBD5E1",
+  borderRadius: "8px",
+  fontSize: "16px",
+};
