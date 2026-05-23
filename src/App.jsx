@@ -585,14 +585,38 @@ Message: ${formData.message || "-"}`;
       </section>
 
       <footer id="contact" style={footerStyle}>
-        <img src="/logo.jpeg" alt="Logo" style={footerLogo} />
-        <p>WhatsApp: +91 9322705535 | Email: Regfastindia@gmail.com</p>
-        <p style={disclaimerStyle}>
-          Disclaimer: We are a private consultancy service provider and are not
-          affiliated with any government authority. We assist customers with
-          application, documentation and online service support.
-        </p>
-      </footer>
+  <img src="/logo.jpeg" alt="Logo" style={footerLogo} />
+
+  <p>
+    WhatsApp: +91 9322705535 | Email: Regfastindia@gmail.com
+  </p>
+
+  <div style={{ marginTop: "15px" }}>
+    <a
+      href="https://www.instagram.com/regfastindia?igsh=c2o4Y3FlZmg5Zm45"
+      target="_blank"
+      rel="noreferrer"
+      style={socialBtn}
+    >
+      Instagram
+    </a>
+
+    <a
+      href="https://www.facebook.com/share/18UxhfbXdp/"
+      target="_blank"
+      rel="noreferrer"
+      style={socialBtn}
+    >
+      Facebook
+    </a>
+  </div>
+
+  <p style={disclaimerStyle}>
+    Disclaimer: We are a private consultancy service provider and are not
+    affiliated with any government authority. We assist customers with
+    application, documentation and online service support.
+  </p>
+</footer>
 
       <a
         href="https://wa.me/919322705535"
@@ -850,19 +874,13 @@ const disclaimerStyle = {
   margin: "20px auto",
 };
 
-const whatsappFloat = {
-  position: "fixed",
-  bottom: "25px",
-  right: "25px",
-  width: "65px",
-  height: "65px",
-  background: "#25D366",
+const socialBtn = {
+  display: "inline-block",
+  margin: "8px",
+  padding: "10px 18px",
+  background: "#F26A1B",
   color: "white",
-  borderRadius: "50%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: "34px",
+  borderRadius: "8px",
   textDecoration: "none",
-  boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
+  fontWeight: "700",
 };
