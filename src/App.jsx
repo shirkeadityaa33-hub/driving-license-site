@@ -199,7 +199,8 @@ export default function App() {
   const [selectedService, setSelectedService] = useState(services[0]);
   const [step, setStep] = useState("kob");
   const [openKob, setOpenKob] = useState(kobList[0].title);
-  const [selectedKob, setSelectedKob] = useState(null);
+  const [selectedKobs, setSelectedKobs] = useState([]);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -210,19 +211,17 @@ export default function App() {
     message: "",
   });
 
-  const chooseService = (service, forceReset = true) => {
+  const chooseService = (service) => {
     setSelectedService(service);
+    setMobileMenu(false);
 
     if (service.name === "New FSSAI Registration") {
       setStep("kob");
       setOpenKob(kobList[0].title);
-
-      if (forceReset) {
-        setSelectedKob(null);
-      }
+      setSelectedKobs([]);
     } else {
       setStep("form");
-      setSelectedKob(null);
+      setSelectedKobs([]);
     }
 
     setTimeout(() => {
@@ -230,12 +229,28 @@ export default function App() {
     }, 100);
   };
 
+  const toggleKobOption = (kob, option) => {
+    const alreadySelected = selectedKobs.some((item) => item.id === option.id);
+
+    if (alreadySelected) {
+      setSelectedKobs(selectedKobs.filter((item) => item.id !== option.id));
+    } else {
+      setSelectedKobs([
+        ...selectedKobs,
+        {
+          kobTitle: kob.title,
+          description: kob.description,
+          ...option,
+        },
+      ]);
+    }
+  };
+
   const proceedToEligibility = () => {
-    if (!selectedKob) {
-      alert("Please select one KOB option first.");
+    if (selectedKobs.length === 0) {
+      alert("Please select at least one KOB option first.");
       return;
     }
-
     setStep("eligibility");
   };
 
@@ -246,20 +261,28 @@ export default function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const selectedKobText = selectedKobs
+      .map(
+        (item, index) =>
+          `${index + 1}. KOB: ${item.kobTitle}
+Criteria: ${item.criteria}
+License Type: ${item.licenseType}
+Price: ${item.price}`
+      )
+      .join("\n\n");
+
     const price =
       selectedService.name === "New FSSAI Registration"
-        ? selectedKob?.price
+        ? selectedKobs.map((item) => item.price).join(", ")
         : selectedService.price;
 
     const whatsappMessage = `New Application
 
 Service: ${selectedService.name}
+
 ${
-  selectedService.name === "New FSSAI Registration" && selectedKob
-    ? `Kind Of Business: ${selectedKob.kobTitle}
-Criteria: ${selectedKob.criteria}
-License Type: ${selectedKob.licenseType}
-Price: ${selectedKob.price}`
+  selectedService.name === "New FSSAI Registration"
+    ? selectedKobText
     : `Price: ${price}`
 }
 
@@ -282,9 +305,7 @@ Message: ${formData.message || "-"}`;
   return (
     <div className="site">
       <style>{`
-        * {
-          box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         html, body {
           margin: 0;
@@ -309,12 +330,10 @@ Message: ${formData.message || "-"}`;
           box-shadow: 0 2px 12px rgba(0,0,0,0.08);
           position: sticky;
           top: 0;
-          z-index: 10;
+          z-index: 50;
         }
 
-        .logo {
-          height: 70px;
-        }
+        .logo { height: 70px; }
 
         .nav {
           display: flex;
@@ -325,6 +344,13 @@ Message: ${formData.message || "-"}`;
         .nav a {
           color: #0F3D73;
           text-decoration: none;
+        }
+
+        .menuIcon {
+          display: none;
+          font-size: 34px;
+          cursor: pointer;
+          color: #0F3D73;
         }
 
         .callBtn {
@@ -384,9 +410,7 @@ Message: ${formData.message || "-"}`;
           max-width: 100%;
         }
 
-        .section {
-          padding: 70px 8%;
-        }
+        .section { padding: 70px 8%; }
 
         .sectionTitle {
           text-align: center;
@@ -462,9 +486,7 @@ Message: ${formData.message || "-"}`;
           font-size: 16px;
         }
 
-        .kobItem {
-          margin-bottom: 8px;
-        }
+        .kobItem { margin-bottom: 8px; }
 
         .kobHeader {
           color: white;
@@ -603,78 +625,80 @@ Message: ${formData.message || "-"}`;
 
         @media (max-width: 768px) {
           .header {
-            flex-direction: column;
-            gap: 12px;
-            padding: 12px 16px;
+            padding: 14px 18px;
+            position: sticky;
           }
 
-          .logo {
-            height: 55px;
-          }
+          .logo { height: 52px; }
+
+          .menuIcon { display: block; }
 
           .nav {
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            font-size: 14px;
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 82px;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+            z-index: 100;
           }
 
-          .callBtn {
-            padding: 10px 16px;
-            font-size: 14px;
+          .nav.showMenu { display: flex; }
+
+          .nav a {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
           }
+
+          .callBtn { display: none; }
 
           .hero {
-            padding: 55px 18px;
+            padding: 45px 18px;
             grid-template-columns: 1fr;
             text-align: center;
           }
 
           .heroTitle {
             font-size: 34px;
+            line-height: 1.2;
           }
 
           .heroText {
             font-size: 16px;
           }
 
-          .section {
-            padding: 50px 16px;
-          }
+          .section { padding: 45px 16px; }
 
-          .sectionTitle {
-            font-size: 32px;
-          }
+          .sectionTitle { font-size: 30px; }
 
-          .serviceCard {
-            padding: 22px;
-          }
+          .serviceGrid { grid-template-columns: 1fr; }
 
-          .aboutSection {
-            padding: 50px 16px;
-          }
+          .aboutSection { padding: 45px 16px; }
 
-          .aboutBox {
-            padding: 25px;
-          }
+          .aboutBox { padding: 24px; }
 
           .formBox {
-            padding: 22px;
+            padding: 18px;
             border-radius: 14px;
           }
 
           .kobHeader {
-            font-size: 14px;
+            font-size: 13px;
             padding: 12px;
           }
 
           .kobContent {
-            padding: 16px;
+            padding: 14px;
             font-size: 14px;
           }
 
+          table { min-width: 650px; }
+
           th, td {
-            min-width: 140px;
             font-size: 13px;
             padding: 10px;
           }
@@ -682,7 +706,7 @@ Message: ${formData.message || "-"}`;
           .primaryBtn,
           .darkBtn {
             width: 100%;
-            margin: 7px 0;
+            margin: 8px 0;
             text-align: center;
           }
 
@@ -699,12 +723,16 @@ Message: ${formData.message || "-"}`;
       <header className="header">
         <img src="/logo.jpeg" alt="RegFast India" className="logo" />
 
-        <nav className="nav">
-          <a href="#">Home</a>
-          <a href="#services">Services</a>
-          <a href="#about">About</a>
-          <a href="#apply">Apply</a>
-          <a href="#contact">Contact</a>
+        <div className="menuIcon" onClick={() => setMobileMenu(!mobileMenu)}>
+          ☰
+        </div>
+
+        <nav className={`nav ${mobileMenu ? "showMenu" : ""}`}>
+          <a href="#" onClick={() => setMobileMenu(false)}>Home</a>
+          <a href="#services" onClick={() => setMobileMenu(false)}>Services</a>
+          <a href="#about" onClick={() => setMobileMenu(false)}>About</a>
+          <a href="#apply" onClick={() => setMobileMenu(false)}>Apply</a>
+          <a href="#contact" onClick={() => setMobileMenu(false)}>Contact</a>
         </nav>
 
         <a href="#services" className="callBtn">
@@ -748,7 +776,6 @@ Message: ${formData.message || "-"}`;
           {services.map((service, index) => (
             <div key={index} className="serviceCard">
               <h3 style={{ color: "#0F3D73" }}>{service.name}</h3>
-
               <p style={{ color: "#64748b" }}>
                 Professional application and documentation assistance.
               </p>
@@ -795,9 +822,6 @@ Message: ${formData.message || "-"}`;
             value={selectedService.name}
             onChange={(e) => {
               const service = services.find((s) => s.name === e.target.value);
-
-              if (service.name === selectedService.name) return;
-
               chooseService(service);
             }}
           >
@@ -848,35 +872,20 @@ Message: ${formData.message || "-"}`;
 
                           <tbody>
                             {kob.options.map((option) => {
-                              const isSelected = selectedKob?.id === option.id;
+                              const isSelected = selectedKobs.some(
+                                (item) => item.id === option.id
+                              );
 
                               return (
-                                <tr
-                                  key={option.id}
-                                  onClick={() =>
-                                    setSelectedKob({
-                                      kobTitle: kob.title,
-                                      description: kob.description,
-                                      ...option,
-                                    })
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                >
+                                <tr key={option.id}>
                                   <td>{option.criteria}</td>
                                   <td>{option.licenseType}</td>
                                   <td>
                                     {option.price}{" "}
                                     <input
-                                      type="radio"
-                                      name="kobOption"
+                                      type="checkbox"
                                       checked={isSelected}
-                                      onChange={() =>
-                                        setSelectedKob({
-                                          kobTitle: kob.title,
-                                          description: kob.description,
-                                          ...option,
-                                        })
-                                      }
+                                      onChange={() => toggleKobOption(kob, option)}
                                     />
                                   </td>
                                 </tr>
@@ -894,7 +903,7 @@ Message: ${formData.message || "-"}`;
                 <button
                   type="button"
                   className="darkBtn"
-                  onClick={() => setSelectedKob(null)}
+                  onClick={() => setSelectedKobs([])}
                 >
                   Clear All Selected KOB
                 </button>
@@ -912,7 +921,7 @@ Message: ${formData.message || "-"}`;
 
           {selectedService.name === "New FSSAI Registration" &&
             step === "eligibility" &&
-            selectedKob && (
+            selectedKobs.length > 0 && (
               <div>
                 <h2 style={{ textAlign: "center", color: "#0F3D73" }}>
                   View Eligibility
@@ -933,11 +942,13 @@ Message: ${formData.message || "-"}`;
                     </thead>
 
                     <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>{selectedKob.kobTitle}</td>
-                        <td>{selectedKob.licenseType}</td>
-                      </tr>
+                      {selectedKobs.map((item, index) => (
+                        <tr key={item.id}>
+                          <td>{index + 1}</td>
+                          <td>{item.kobTitle}</td>
+                          <td>{item.licenseType}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -948,7 +959,7 @@ Message: ${formData.message || "-"}`;
                     className="primaryBtn"
                     onClick={proceedToForm}
                   >
-                    You are eligible for {selectedKob.licenseType}, click here to proceed
+                    Click here to proceed
                   </button>
                 </div>
               </div>
@@ -961,18 +972,20 @@ Message: ${formData.message || "-"}`;
                 <br />
 
                 {selectedService.name === "New FSSAI Registration" &&
-                  selectedKob && (
+                  selectedKobs.length > 0 && (
                     <>
-                      <b>Kind Of Business:</b> {selectedKob.kobTitle}
+                      <b>Selected KOB:</b>{" "}
+                      {selectedKobs.map((item) => item.kobTitle).join(", ")}
                       <br />
-                      <b>License Type:</b> {selectedKob.licenseType}
+                      <b>License Type:</b>{" "}
+                      {selectedKobs.map((item) => item.licenseType).join(", ")}
                       <br />
                     </>
                   )}
 
                 <b>Service Fee:</b>{" "}
                 {selectedService.name === "New FSSAI Registration"
-                  ? selectedKob?.price
+                  ? selectedKobs.map((item) => item.price).join(", ")
                   : selectedService.price}
               </div>
 
