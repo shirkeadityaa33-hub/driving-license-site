@@ -7,7 +7,12 @@ export default function App() {
     {
       name: "New FSSAI Registration",
       price: "₹1,499",
-      fields: ["businessName", "ownerName", "phone", "email", "address"],
+      categories: [
+        { name: "Basic Registration", price: "₹1,499" },
+        { name: "State License", price: "₹4,999" },
+        { name: "Central License", price: "₹9,999" },
+      ],
+      fields: ["businessName", "ownerName", "phone", "email", "businessType", "address"],
     },
     {
       name: "FSSAI Renewal",
@@ -32,7 +37,7 @@ export default function App() {
   ];
 
   const [selectedService, setSelectedService] = useState(services[0]);
-  const [success, setSuccess] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(services[0].categories[0]);
 
   const [formData, setFormData] = useState({
     businessName: "",
@@ -45,6 +50,8 @@ export default function App() {
     changesRequired: "",
     city: "",
     websiteType: "",
+    websiteType: "",
+    businessType: "",
     message: "",
   });
 
@@ -59,27 +66,41 @@ export default function App() {
     changesRequired: "Changes Required",
     city: "City",
     websiteType: "Website Type",
+    businessType: "Business Type",
     message: "Message / Requirement",
+  };
+
+  const getCurrentPrice = () => {
+    if (selectedService.categories) return selectedCategory.price;
+    return selectedService.price;
   };
 
   const selectService = (service) => {
     setSelectedService(service);
-    setSuccess(false);
+    if (service.categories) {
+      setSelectedCategory(service.categories[0]);
+    } else {
+      setSelectedCategory(null);
+    }
     document.getElementById("apply").scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleChange = (e) => {
-    setSuccess(false);
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   const handleServiceChange = (e) => {
     const service = services.find((item) => item.name === e.target.value);
     setSelectedService(service);
-    setSuccess(false);
+
+    if (service.categories) {
+      setSelectedCategory(service.categories[0]);
+    } else {
+      setSelectedCategory(null);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = (e) => {
@@ -94,22 +115,16 @@ export default function App() {
     const whatsappMessage = `New Service Application
 
 Service: ${selectedService.name}
-Price: ${selectedService.price}
+Category: ${selectedCategory ? selectedCategory.name : "-"}
+Price: ${getCurrentPrice()}
 
 Client Details:
-${details}
-
-Confirmation Message:
-Stay tuned. Our executive will reach you soon with details about ${selectedService.name}.`;
+${details}`;
 
     window.open(
-      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        whatsappMessage
-      )}`,
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`,
       "_blank"
     );
-
-    setSuccess(true);
   };
 
   const renderField = (field) => {
@@ -127,18 +142,25 @@ Stay tuned. Our executive will reach you soon with details about ${selectedServi
       );
     }
 
-    if (field === "changesRequired" || field === "address" || field === "message") {
+    if (field === "businessType") {
       return (
-        <textarea
+        <select
           key={field}
           name={field}
-          placeholder={fieldLabels[field]}
-          rows="4"
           value={formData[field]}
           onChange={handleChange}
           required
           style={inputStyle}
-        />
+        >
+          <option value="">Select Business Type</option>
+          <option>Restaurant</option>
+          <option>Cloud Kitchen</option>
+          <option>Food Manufacturer</option>
+          <option>Food Trader</option>
+          <option>Food Distributor</option>
+          <option>Retail Shop</option>
+          <option>Other</option>
+        </select>
       );
     }
 
@@ -157,8 +179,22 @@ Stay tuned. Our executive will reach you soon with details about ${selectedServi
           <option>E-commerce Website</option>
           <option>Portfolio Website</option>
           <option>Landing Page</option>
-          <option>Other</option>
         </select>
+      );
+    }
+
+    if (field === "changesRequired" || field === "address" || field === "message") {
+      return (
+        <textarea
+          key={field}
+          name={field}
+          placeholder={fieldLabels[field]}
+          rows="4"
+          value={formData[field]}
+          onChange={handleChange}
+          required
+          style={inputStyle}
+        />
       );
     }
 
@@ -184,6 +220,7 @@ Stay tuned. Our executive will reach you soon with details about ${selectedServi
         <nav style={{ display: "flex", gap: "25px", fontWeight: "600" }}>
           <a href="#" style={navStyle}>Home</a>
           <a href="#services" style={navStyle}>Services</a>
+          <a href="#about" style={navStyle}>About</a>
           <a href="#apply" style={navStyle}>Apply</a>
           <a href="#contact" style={navStyle}>Contact</a>
         </nav>
@@ -204,17 +241,17 @@ Stay tuned. Our executive will reach you soon with details about ${selectedServi
 
           <p style={heroText}>
             We help customers with FSSAI registration, renewal, modification,
-            water testing reports, website designing and business documentation support.
+            water testing reports, website designing and documentation support.
           </p>
 
           <a href="#services" style={primaryBtn}>View Services</a>
         </div>
 
         <div style={heroCard}>
-          <img src="/logo.jpeg" alt="RegFast India Logo" style={{ width: "260px" }} />
+          <img src="/logo.jpeg" alt="Logo" style={{ width: "260px" }} />
           <h2 style={{ color: "#0F3D73" }}>Fast & Reliable Service</h2>
           <p style={{ color: "#64748b" }}>
-            Choose service, check price, submit details and get support.
+            Choose service, select category, fill details and connect instantly.
           </p>
         </div>
       </section>
@@ -224,26 +261,50 @@ Stay tuned. Our executive will reach you soon with details about ${selectedServi
           Our <span style={{ color: "#F26A1B" }}>Services</span>
         </h2>
 
-        <p style={{ textAlign: "center", color: "#64748b", fontSize: "18px" }}>
-          Select a service and the correct form will open with the price.
-        </p>
-
         <div style={serviceGrid}>
           {services.map((service, index) => (
             <div key={index} style={serviceCard}>
               <h3 style={{ color: "#0F3D73" }}>{service.name}</h3>
 
-              <h2 style={{ color: "#F26A1B" }}>{service.price}</h2>
-
               <p style={{ color: "#64748b" }}>
                 Professional application and documentation assistance.
               </p>
+
+              {service.categories && (
+                <p style={{ color: "#F26A1B", fontWeight: "700" }}>
+                  Categories available
+                </p>
+              )}
 
               <button onClick={() => selectService(service)} style={smallBtn}>
                 Apply Now
               </button>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="about" style={aboutSection}>
+        <div style={aboutBox}>
+          <h2 style={{ color: "#0F3D73", fontSize: "38px" }}>
+            About <span style={{ color: "#F26A1B" }}>RegFast India</span>
+          </h2>
+
+          <p style={aboutText}>
+            RegFast India is a private consultancy service provider offering
+            support for business registration, FSSAI services, documentation
+            assistance, water testing reports and website designing.
+          </p>
+
+          <p style={aboutText}>
+            We help customers prepare required information, understand processes,
+            and complete applications smoothly and quickly.
+          </p>
+
+          <p style={aboutText}>
+            We are not affiliated with any government authority. We only provide
+            private consultancy and documentation support services.
+          </p>
         </div>
       </section>
 
@@ -256,7 +317,13 @@ Stay tuned. Our executive will reach you soon with details about ${selectedServi
           <div style={priceBox}>
             <b>Selected Service:</b> {selectedService.name}
             <br />
-            <b>Service Fee:</b> {selectedService.price}
+            {selectedService.categories && (
+              <>
+                <b>Selected Category:</b> {selectedCategory.name}
+                <br />
+              </>
+            )}
+            <b>Service Fee:</b> {getCurrentPrice()}
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -270,24 +337,34 @@ Stay tuned. Our executive will reach you soon with details about ${selectedServi
               ))}
             </select>
 
+            {selectedService.categories && (
+              <select
+                style={inputStyle}
+                value={selectedCategory.name}
+                onChange={(e) => {
+                  const category = selectedService.categories.find(
+                    (cat) => cat.name === e.target.value
+                  );
+                  setSelectedCategory(category);
+                }}
+              >
+                {selectedService.categories.map((category, index) => (
+                  <option key={index}>{category.name}</option>
+                ))}
+              </select>
+            )}
+
             {selectedService.fields.map((field) => renderField(field))}
 
             <button type="submit" style={submitBtn}>
               Submit Application on WhatsApp
             </button>
-
-            {success && (
-              <p style={successMessage}>
-                Thank you! Stay tuned, our executive will reach you soon with
-                details about your selected service: {selectedService.name}.
-              </p>
-            )}
           </form>
         </div>
       </section>
 
       <footer id="contact" style={footerStyle}>
-        <img src="/logo.jpeg" alt="RegFast India" style={footerLogo} />
+        <img src="/logo.jpeg" alt="Logo" style={footerLogo} />
 
         <p>WhatsApp: +91 9322705535 | Email: Regfastindia@gmail.com</p>
 
@@ -297,6 +374,15 @@ Stay tuned. Our executive will reach you soon with details about ${selectedServi
           application, documentation and online service support.
         </p>
       </footer>
+
+      <a
+        href="https://wa.me/919322705535"
+        target="_blank"
+        rel="noreferrer"
+        style={whatsappFloat}
+      >
+        💬
+      </a>
     </div>
   );
 }
@@ -399,6 +485,27 @@ const smallBtn = {
   fontWeight: "700",
 };
 
+const aboutSection = {
+  background: "#FFF7ED",
+  padding: "80px 8%",
+};
+
+const aboutBox = {
+  maxWidth: "950px",
+  margin: "auto",
+  background: "white",
+  padding: "45px",
+  borderRadius: "20px",
+  boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
+  borderLeft: "6px solid #F26A1B",
+};
+
+const aboutText = {
+  fontSize: "18px",
+  lineHeight: "1.8",
+  color: "#475569",
+};
+
 const applySection = {
   background: "#0F3D73",
   padding: "70px 20px",
@@ -443,15 +550,6 @@ const submitBtn = {
   cursor: "pointer",
 };
 
-const successMessage = {
-  color: "#15803d",
-  background: "#dcfce7",
-  padding: "14px",
-  borderRadius: "10px",
-  marginTop: "15px",
-  fontWeight: "700",
-};
-
 const footerStyle = {
   background: "#071B33",
   color: "white",
@@ -470,4 +568,21 @@ const disclaimerStyle = {
   color: "#CBD5E1",
   maxWidth: "850px",
   margin: "20px auto",
+};
+
+const whatsappFloat = {
+  position: "fixed",
+  bottom: "25px",
+  right: "25px",
+  width: "65px",
+  height: "65px",
+  background: "#25D366",
+  color: "white",
+  borderRadius: "50%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: "34px",
+  textDecoration: "none",
+  boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
 };
