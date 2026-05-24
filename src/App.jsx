@@ -518,33 +518,7 @@ Message: ${formData.message}`;
           </p>
         </div>
       </section>
-<section id="services" className="section">
-  <h2 className="sectionTitle">
-    Our <span style={{ color: "#F26A1B" }}>Services</span>
-  </h2>
 
-  <div className="serviceGrid">
-    {services.map((service, index) => (
-      <div key={index} className="serviceCard">
-        <h3 style={{ color: "#0F3D73" }}>
-          {service.name}
-        </h3>
-
-        <p style={{ color: "#64748b" }}>
-          Professional application and documentation assistance.
-        </p>
-
-        <button
-          type="button"
-          onClick={() => chooseService(service)}
-          className="smallBtn"
-        >
-          Apply Now
-        </button>
-      </div>
-    ))}
-  </div>
-</section>
       <section id="apply" className="applySection">
         <div className="formBox">
           <h2 style={{ textAlign: "center", color: "#0F3D73" }}>
