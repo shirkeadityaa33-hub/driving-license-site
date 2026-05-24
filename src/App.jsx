@@ -11,6 +11,18 @@ export default function App() {
         "Choose your business type and get FSSAI registration support with documentation and application assistance.",
     },
     {
+      name: "MSME / UDYAM Registration",
+      price: "₹599",
+      description:
+        "Get your MSME/Udyam Registration quickly and easily. Udyam registration helps businesses access government benefits, loan schemes, subsidies, and official business recognition. The government’s Udyam registration system is online and paperless.",
+    },
+    {
+      name: "Shop & Establishment Act Registration",
+      price: "₹799",
+      description:
+        "Register your business under the Shop & Establishment Act for legal compliance. Suitable for shops, offices, startups, and commercial establishments.",
+    },
+    {
       name: "FSSAI Renewal",
       price: "₹999",
       description:
@@ -30,21 +42,9 @@ export default function App() {
     },
     {
       name: "Website Designing",
-      price: "₹2,999",
+      price: "₹4,999",
       description:
         "Create a clean and professional website for your business with basic setup support.",
-    },
-    {
-      name: "MSME / UDYAM Registration",
-      price: "₹600",
-      description:
-        "Get your MSME/Udyam Registration quickly and easily. Udyam registration helps businesses access government benefits, loan schemes, subsidies, and official business recognition. The government’s Udyam registration system is online and paperless.",
-    },
-    {
-      name: "Shop & Establishment Act Registration",
-      price: "₹800",
-      description:
-        "Register your business under the Shop & Establishment Act for legal compliance. Suitable for shops, offices, startups, and commercial establishments.",
     },
   ];
 
@@ -368,12 +368,30 @@ export default function App() {
         .brandCenter{
           text-align:center;
           flex:1;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          justify-content:center;
+        }
+
+        .brandMainLogo{
+          height:82px;
+          max-width:260px;
+          object-fit:contain;
+          display:block;
+          margin-bottom:6px;
         }
 
         .topLogo{
           height:70px;
           max-width:140px;
           object-fit:contain;
+        }
+
+        .fssaiLogo{
+          background:transparent;
+          mix-blend-mode:multiply;
+          filter:contrast(1.08) saturate(1.08);
         }
 
         .header{
@@ -725,8 +743,14 @@ export default function App() {
             max-width:72px;
           }
 
+          .brandMainLogo{
+            height:54px;
+            max-width:150px;
+            margin-bottom:3px;
+          }
+
           .brandCenter h2{
-            font-size:18px;
+            display:none;
           }
 
           .brandCenter p{
@@ -817,13 +841,14 @@ export default function App() {
         <img className="topLogo" src="/msme-logo.jpeg" alt="MSME Logo" />
 
         <div className="brandCenter">
+          <img className="brandMainLogo" src="/logo.jpeg" alt="RegFast India Logo" />
           <h2 style={{ color: "#0F3D73" }}>RegFast India</h2>
           <p style={{ color: "#64748b" }}>
             Business Registration & Compliance Services
           </p>
         </div>
 
-        <img className="topLogo" src="/fssai-logo.jpeg" alt="FSSAI Logo" />
+        <img className="topLogo fssaiLogo" src="/fssai-logo.jpeg" alt="FSSAI Logo" />
       </div>
 
       <header className="header">
