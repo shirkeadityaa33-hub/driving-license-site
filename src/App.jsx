@@ -4,11 +4,48 @@ export default function App() {
   const whatsappNumber = "919322705535";
 
   const services = [
-    { name: "New FSSAI Registration", price: "Select KOB" },
-    { name: "FSSAI Renewal", price: "₹999" },
-    { name: "FSSAI Modification", price: "₹999" },
-    { name: "Water Testing Report", price: "₹2,999" },
-    { name: "Website Designing", price: "₹4,999" },
+    {
+      name: "New FSSAI Registration",
+      price: "Select KOB",
+      description:
+        "Choose your business type and get FSSAI registration support with documentation and application assistance.",
+    },
+    {
+      name: "FSSAI Renewal",
+      price: "₹999",
+      description:
+        "Renew your existing FSSAI registration/license with professional application and documentation support.",
+    },
+    {
+      name: "FSSAI Modification",
+      price: "₹999",
+      description:
+        "Update or modify your FSSAI details with simple documentation and online application assistance.",
+    },
+    {
+      name: "Water Testing Report",
+      price: "₹2,999",
+      description:
+        "Get support for water testing report requirements for food business compliance.",
+    },
+    {
+      name: "Website Designing",
+      price: "₹4,999",
+      description:
+        "Create a clean and professional website for your business with basic setup support.",
+    },
+    {
+      name: "MSME / UDYAM Registration",
+      price: "₹600",
+      description:
+        "Get your MSME/Udyam Registration quickly and easily. Udyam registration helps businesses access government benefits, loan schemes, subsidies, and official business recognition. The government’s Udyam registration system is online and paperless.",
+    },
+    {
+      name: "Shop & Establishment Act Registration",
+      price: "₹800",
+      description:
+        "Register your business under the Shop & Establishment Act for legal compliance. Suitable for shops, offices, startups, and commercial establishments.",
+    },
   ];
 
   const kobList = [
@@ -21,7 +58,7 @@ export default function App() {
           id: "petty-registration",
           criteria: "Petty Retailer of snacks/tea shops",
           licenseType: "Registration",
-          price: "₹2,999",
+          price: "₹899",
         },
       ],
     },
@@ -53,7 +90,7 @@ export default function App() {
           id: "wholesaler-registration",
           criteria: "Turnover up to 12 lakhs/annum",
           licenseType: "Registration",
-          price: "₹2,999",
+          price: "₹899",
         },
         {
           id: "wholesaler-state",
@@ -72,7 +109,7 @@ export default function App() {
           id: "retailer-registration",
           criteria: "Turnover up to 12 lakhs/annum",
           licenseType: "Registration",
-          price: "₹2,999",
+          price: "₹899",
         },
         {
           id: "retailer-state",
@@ -91,7 +128,7 @@ export default function App() {
           id: "distributor-registration",
           criteria: "Turnover up to 12 lakhs/annum",
           licenseType: "Registration",
-          price: "₹2,999",
+          price: "₹899",
         },
         {
           id: "distributor-state",
@@ -110,7 +147,7 @@ export default function App() {
           id: "direct-seller-registration",
           criteria: "Direct food seller",
           licenseType: "Registration",
-          price: "₹2,999",
+          price: "₹899",
         },
       ],
     },
@@ -123,7 +160,7 @@ export default function App() {
           id: "vending-registration",
           criteria: "Food vending business",
           licenseType: "Registration",
-          price: "₹2,999",
+          price: "₹899",
         },
       ],
     },
@@ -190,7 +227,7 @@ export default function App() {
           id: "hawker-registration",
           criteria: "Mobile food vendor",
           licenseType: "Registration",
-          price: "₹2,999",
+          price: "₹899",
         },
       ],
     },
@@ -320,7 +357,7 @@ export default function App() {
 
         .topBar{
           background:white;
-          padding:20px;
+          padding:16px 8%;
           display:flex;
           justify-content:space-between;
           align-items:center;
@@ -328,8 +365,14 @@ export default function App() {
           flex-wrap:wrap;
         }
 
-        .topBar img{
-          height:65px;
+        .brandCenter{
+          text-align:center;
+          flex:1;
+        }
+
+        .topLogo{
+          height:70px;
+          max-width:140px;
           object-fit:contain;
         }
 
@@ -472,7 +515,15 @@ export default function App() {
           line-height:1.7;
         }
 
-        .smallBtn{
+        .servicePrice{
+          color:#F26A1B;
+          font-weight:900;
+          font-size:22px;
+          margin-bottom:18px;
+        }
+
+        .smallBtn,
+        .primaryBtn{
           background:#F26A1B;
           color:white;
           border:none;
@@ -480,6 +531,8 @@ export default function App() {
           border-radius:8px;
           font-weight:700;
           cursor:pointer;
+          text-decoration:none;
+          display:inline-block;
         }
         .applySection{
           padding:70px 8%;
@@ -550,6 +603,8 @@ export default function App() {
           padding:12px;
           text-align:left;
           border-bottom:1px solid rgba(255,255,255,0.5);
+          white-space:normal;
+          word-break:break-word;
         }
 
         .eligibilityTable th{
@@ -659,12 +714,23 @@ export default function App() {
 
         @media(max-width:768px){
           .topBar{
-            justify-content:center;
+            padding:12px 14px;
+            justify-content:space-between;
             text-align:center;
+            flex-wrap:nowrap;
           }
 
-          .topBar img{
-            height:55px;
+          .topLogo{
+            height:46px;
+            max-width:72px;
+          }
+
+          .brandCenter h2{
+            font-size:18px;
+          }
+
+          .brandCenter p{
+            font-size:11px;
           }
 
           .header{
@@ -720,13 +786,24 @@ export default function App() {
             padding:20px;
           }
 
+          .tableWrap{
+            overflow-x:visible;
+          }
+
           table{
-            min-width:650px;
+            min-width:0;
+            width:100%;
+            table-layout:fixed;
           }
 
           th,td{
-            font-size:13px;
+            font-size:11px;
+            padding:8px 5px;
           }
+
+          th:nth-child(1), td:nth-child(1){ width:48%; }
+          th:nth-child(2), td:nth-child(2){ width:27%; }
+          th:nth-child(3), td:nth-child(3){ width:25%; }
 
           .darkBtn,
           .submitBtn{
@@ -737,14 +814,16 @@ export default function App() {
       `}</style>
 
       <div className="topBar">
-        <img src="/logo.jpeg" alt="RegFast India" />
+        <img className="topLogo" src="/msme-logo.jpeg" alt="MSME Logo" />
 
-        <div>
+        <div className="brandCenter">
           <h2 style={{ color: "#0F3D73" }}>RegFast India</h2>
           <p style={{ color: "#64748b" }}>
             Business Registration & Compliance Services
           </p>
         </div>
+
+        <img className="topLogo" src="/fssai-logo.jpeg" alt="FSSAI Logo" />
       </div>
 
       <header className="header">
@@ -826,10 +905,9 @@ export default function App() {
             <div key={index} className="serviceCard">
               <h3>{service.name}</h3>
 
-              <p>
-                Professional application and documentation assistance for
-                businesses.
-              </p>
+              <p>{service.description}</p>
+
+              <div className="servicePrice">{service.price}</div>
 
               <button
                 type="button"
