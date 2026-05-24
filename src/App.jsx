@@ -17,114 +17,53 @@ export default function App() {
       description:
         "Manufactures or sells any kind of food by himself/herself, petty retailer, hawker, itinerant vendor, temporary stall, Thela, Sweets Shop, Juice Stall, etc.",
       options: [
-        {
-          id: "petty-registration",
-          criteria: "Petty Retailer of snacks/tea shops",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
+        { id: "petty-registration", criteria: "Petty Retailer of snacks/tea shops", licenseType: "Registration", price: "₹2,999" },
       ],
     },
     {
       title: "Storage (Except Controlled Atmosphere and Cold)",
-      description:
-        "Food storage business except controlled atmosphere and cold storage.",
+      description: "Food storage business except controlled atmosphere and cold storage.",
       options: [
-        {
-          id: "storage-registration",
-          criteria: "Turnover up to 12 lakhs/annum",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
-        {
-          id: "storage-state",
-          criteria: "Turnover above 12 lakhs/annum",
-          licenseType: "State License",
-          price: "₹7,999",
-        },
+        { id: "storage-registration", criteria: "Turnover up to 12 lakhs/annum", licenseType: "Registration", price: "₹2,999" },
+        { id: "storage-state", criteria: "Turnover above 12 lakhs/annum", licenseType: "State License", price: "₹7,999" },
       ],
     },
     {
       title: "Wholesaler",
-      description:
-        "Wholesaler dealing in food products and supplying to retailers or distributors.",
+      description: "Wholesaler dealing in food products and supplying to retailers or distributors.",
       options: [
-        {
-          id: "wholesaler-registration",
-          criteria: "Turnover up to 12 lakhs/annum",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
-        {
-          id: "wholesaler-state",
-          criteria: "Turnover above 12 lakhs/annum",
-          licenseType: "State License",
-          price: "₹7,999",
-        },
+        { id: "wholesaler-registration", criteria: "Turnover up to 12 lakhs/annum", licenseType: "Registration", price: "₹2,999" },
+        { id: "wholesaler-state", criteria: "Turnover above 12 lakhs/annum", licenseType: "State License", price: "₹7,999" },
       ],
     },
     {
       title: "Retailer",
-      description:
-        "Retail food business selling food products directly to customers.",
+      description: "Retail food business selling food products directly to customers.",
       options: [
-        {
-          id: "retailer-registration",
-          criteria: "Turnover up to 12 lakhs/annum",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
-        {
-          id: "retailer-state",
-          criteria: "Turnover above 12 lakhs/annum",
-          licenseType: "State License",
-          price: "₹7,999",
-        },
+        { id: "retailer-registration", criteria: "Turnover up to 12 lakhs/annum", licenseType: "Registration", price: "₹2,999" },
+        { id: "retailer-state", criteria: "Turnover above 12 lakhs/annum", licenseType: "State License", price: "₹7,999" },
       ],
     },
     {
       title: "Distributor",
-      description:
-        "Distributor supplying food products from manufacturer or wholesaler to sellers.",
+      description: "Distributor supplying food products from manufacturer or wholesaler to sellers.",
       options: [
-        {
-          id: "distributor-registration",
-          criteria: "Turnover up to 12 lakhs/annum",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
-        {
-          id: "distributor-state",
-          criteria: "Turnover above 12 lakhs/annum",
-          licenseType: "State License",
-          price: "₹7,999",
-        },
+        { id: "distributor-registration", criteria: "Turnover up to 12 lakhs/annum", licenseType: "Registration", price: "₹2,999" },
+        { id: "distributor-state", criteria: "Turnover above 12 lakhs/annum", licenseType: "State License", price: "₹7,999" },
       ],
     },
     {
       title: "Direct Seller",
-      description:
-        "Direct seller selling food products directly to end customers.",
+      description: "Direct seller selling food products directly to end customers.",
       options: [
-        {
-          id: "direct-seller-registration",
-          criteria: "Direct food seller",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
+        { id: "direct-seller-registration", criteria: "Direct food seller", licenseType: "Registration", price: "₹2,999" },
       ],
     },
     {
       title: "Food Vending Agencies",
-      description:
-        "Food vending agency operating food stalls, vending counters or carts.",
+      description: "Food vending agency operating food stalls, vending counters or carts.",
       options: [
-        {
-          id: "vending-registration",
-          criteria: "Food vending business",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
+        { id: "vending-registration", criteria: "Food vending business", licenseType: "Registration", price: "₹2,999" },
       ],
     },
     {
@@ -133,65 +72,30 @@ export default function App() {
       description:
         "Transportation is an activity of transporting food products from one location to another in vehicles/containers including insulated refrigerated van/wagon, oil/milk tankers etc.",
       options: [
-        {
-          id: "transport-central",
-          criteria:
-            "Having more than 100 vehicles/wagons or turnover more than 30 crores/annum",
-          licenseType: "Central License",
-          price: "₹15,000",
-        },
-        {
-          id: "transport-state",
-          criteria:
-            "Having up to 100 vehicles/wagons or turnover up to 30 crores/annum",
-          licenseType: "State License",
-          price: "₹7,999",
-        },
-        {
-          id: "transport-registration",
-          criteria: "Turnover up to 12 lakhs/annum",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
+        { id: "transport-central", criteria: "Having more than 100 vehicles/wagons or turnover more than 30 crores/annum", licenseType: "Central License", price: "₹15,000" },
+        { id: "transport-state", criteria: "Having up to 100 vehicles/wagons or turnover up to 30 crores/annum", licenseType: "State License", price: "₹7,999" },
+        { id: "transport-registration", criteria: "Turnover up to 12 lakhs/annum", licenseType: "Registration", price: "₹2,999" },
       ],
     },
     {
       title: "Importer",
-      description:
-        "Importer bringing food products from outside India for sale or distribution.",
+      description: "Importer bringing food products from outside India for sale or distribution.",
       options: [
-        {
-          id: "importer-central",
-          criteria: "Food importer",
-          licenseType: "Central License",
-          price: "₹15,000",
-        },
+        { id: "importer-central", criteria: "Food importer", licenseType: "Central License", price: "₹15,000" },
       ],
     },
     {
       title: "Trader/Merchant - Exporter",
-      description:
-        "Food trader, merchant or exporter involved in trading or exporting food products.",
+      description: "Food trader, merchant or exporter involved in trading or exporting food products.",
       options: [
-        {
-          id: "exporter-central",
-          criteria: "Trader / Merchant / Exporter",
-          licenseType: "Central License",
-          price: "₹15,000",
-        },
+        { id: "exporter-central", criteria: "Trader / Merchant / Exporter", licenseType: "Central License", price: "₹15,000" },
       ],
     },
     {
       title: "Hawker (Itinerant / Mobile food vendor)",
-      description:
-        "Mobile food vendor, hawker or itinerant food seller selling food items from temporary/mobile location.",
+      description: "Mobile food vendor, hawker or itinerant food seller selling food items from temporary/mobile location.",
       options: [
-        {
-          id: "hawker-registration",
-          criteria: "Mobile food vendor",
-          licenseType: "Registration",
-          price: "₹2,999",
-        },
+        { id: "hawker-registration", criteria: "Mobile food vendor", licenseType: "Registration", price: "₹2,999" },
       ],
     },
   ];
@@ -230,9 +134,9 @@ export default function App() {
   };
 
   const toggleKobOption = (kob, option) => {
-    const alreadySelected = selectedKobs.some((item) => item.id === option.id);
+    const exists = selectedKobs.some((item) => item.id === option.id);
 
-    if (alreadySelected) {
+    if (exists) {
       setSelectedKobs(selectedKobs.filter((item) => item.id !== option.id));
     } else {
       setSelectedKobs([
@@ -254,9 +158,7 @@ export default function App() {
     setStep("eligibility");
   };
 
-  const proceedToForm = () => {
-    setStep("form");
-  };
+  const proceedToForm = () => setStep("form");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -295,9 +197,7 @@ Address: ${formData.address}
 Message: ${formData.message || "-"}`;
 
     window.open(
-      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        whatsappMessage
-      )}`,
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`,
       "_blank"
     );
   };
@@ -386,7 +286,7 @@ Message: ${formData.message || "-"}`;
 
         .primaryBtn {
           display: inline-block;
-          margin: 10px;
+          margin: 10px 0;
           background: #F26A1B;
           color: white;
           padding: 14px 28px;
@@ -431,6 +331,7 @@ Message: ${formData.message || "-"}`;
           background: white;
           box-shadow: 0 8px 25px rgba(0,0,0,0.08);
           border-top: 5px solid #F26A1B;
+          text-align: center;
         }
 
         .smallBtn {
@@ -441,27 +342,6 @@ Message: ${formData.message || "-"}`;
           border-radius: 8px;
           cursor: pointer;
           font-weight: 700;
-        }
-
-        .aboutSection {
-          background: #FFF7ED;
-          padding: 80px 8%;
-        }
-
-        .aboutBox {
-          max-width: 950px;
-          margin: auto;
-          background: white;
-          padding: 45px;
-          border-radius: 20px;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-          border-left: 6px solid #F26A1B;
-        }
-
-        .aboutText {
-          font-size: 18px;
-          line-height: 1.8;
-          color: #475569;
         }
 
         .applySection {
@@ -667,19 +547,13 @@ Message: ${formData.message || "-"}`;
             line-height: 1.2;
           }
 
-          .heroText {
-            font-size: 16px;
-          }
+          .heroText { font-size: 16px; }
 
           .section { padding: 45px 16px; }
 
           .sectionTitle { font-size: 30px; }
 
           .serviceGrid { grid-template-columns: 1fr; }
-
-          .aboutSection { padding: 45px 16px; }
-
-          .aboutBox { padding: 24px; }
 
           .formBox {
             padding: 18px;
@@ -730,8 +604,6 @@ Message: ${formData.message || "-"}`;
         <nav className={`nav ${mobileMenu ? "showMenu" : ""}`}>
           <a href="#" onClick={() => setMobileMenu(false)}>Home</a>
           <a href="#services" onClick={() => setMobileMenu(false)}>Services</a>
-          <a href="#about" onClick={() => setMobileMenu(false)}>About</a>
-          <a href="#apply" onClick={() => setMobileMenu(false)}>Apply</a>
           <a href="#contact" onClick={() => setMobileMenu(false)}>Contact</a>
         </nav>
 
@@ -747,13 +619,18 @@ Message: ${formData.message || "-"}`;
           </p>
 
           <h1 className="heroTitle">
-            Business Registration <br />
-            & Compliance <span style={{ color: "#F26A1B" }}>Services</span>
+            About <span style={{ color: "#F26A1B" }}>RegFast India</span>
           </h1>
 
           <p className="heroText">
-            Fast and trusted support for FSSAI registration, renewal,
-            modification, water testing report and website designing.
+            RegFast India provides professional consultancy support for FSSAI
+            registration, renewal, modification, water testing reports and
+            website designing services across India.
+          </p>
+
+          <p className="heroText">
+            We assist businesses with documentation, online applications and
+            compliance support in a fast and trusted way.
           </p>
 
           <a href="#services" className="primaryBtn">
@@ -776,6 +653,7 @@ Message: ${formData.message || "-"}`;
           {services.map((service, index) => (
             <div key={index} className="serviceCard">
               <h3 style={{ color: "#0F3D73" }}>{service.name}</h3>
+
               <p style={{ color: "#64748b" }}>
                 Professional application and documentation assistance.
               </p>
@@ -789,25 +667,6 @@ Message: ${formData.message || "-"}`;
               </button>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section id="about" className="aboutSection">
-        <div className="aboutBox">
-          <h2 style={{ color: "#0F3D73", fontSize: "38px" }}>
-            About <span style={{ color: "#F26A1B" }}>RegFast India</span>
-          </h2>
-
-          <p className="aboutText">
-            RegFast India is a private consultancy service provider offering
-            support for FSSAI services, documentation assistance, water testing
-            reports and website designing.
-          </p>
-
-          <p className="aboutText">
-            We are not affiliated with any government authority. We only provide
-            private consultancy and documentation support services.
-          </p>
         </div>
       </section>
 
