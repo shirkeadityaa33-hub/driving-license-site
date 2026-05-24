@@ -30,7 +30,7 @@ export default function App() {
     },
     {
       name: "Website Designing",
-      price: "₹4,999",
+      price: "₹2,999",
       description:
         "Create a clean and professional website for your business with basic setup support.",
     },
