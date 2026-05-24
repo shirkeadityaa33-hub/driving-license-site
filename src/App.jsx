@@ -55,6 +55,12 @@ export default function App() {
           licenseType: "Registration",
           price: "₹2,999",
         },
+        {
+          id: "wholesaler-state",
+          criteria: "Turnover above 12 lakhs/annum",
+          licenseType: "State License",
+          price: "₹7,999",
+        },
       ],
     },
     {
@@ -64,20 +70,125 @@ export default function App() {
       options: [
         {
           id: "retailer-registration",
-          criteria: "Retail food business",
+          criteria: "Turnover up to 12 lakhs/annum",
           licenseType: "Registration",
           price: "₹2,999",
+        },
+        {
+          id: "retailer-state",
+          criteria: "Turnover above 12 lakhs/annum",
+          licenseType: "State License",
+          price: "₹7,999",
         },
       ],
     },
     {
       title: "Distributor",
       description:
-        "Distributor supplying food products from manufacturer or wholesaler.",
+        "Distributor supplying food products from manufacturer or wholesaler to sellers.",
       options: [
         {
           id: "distributor-registration",
-          criteria: "Distributor food business",
+          criteria: "Turnover up to 12 lakhs/annum",
+          licenseType: "Registration",
+          price: "₹2,999",
+        },
+        {
+          id: "distributor-state",
+          criteria: "Turnover above 12 lakhs/annum",
+          licenseType: "State License",
+          price: "₹7,999",
+        },
+      ],
+    },
+    {
+      title: "Direct Seller",
+      description:
+        "Direct seller selling food products directly to end customers.",
+      options: [
+        {
+          id: "direct-seller-registration",
+          criteria: "Direct food seller",
+          licenseType: "Registration",
+          price: "₹2,999",
+        },
+      ],
+    },
+    {
+      title: "Food Vending Agencies",
+      description:
+        "Food vending agency operating food stalls, vending counters or carts.",
+      options: [
+        {
+          id: "vending-registration",
+          criteria: "Food vending business",
+          licenseType: "Registration",
+          price: "₹2,999",
+        },
+      ],
+    },
+    {
+      title:
+        "Transportation (having a number of specialized vehicles like insulated refrigerated van/wagon and milk tankers etc.)",
+      description:
+        "Transportation is an activity of transporting food products from one location to another in vehicles/containers including insulated refrigerated van/wagon, oil/milk tankers etc.",
+      options: [
+        {
+          id: "transport-central",
+          criteria:
+            "Having more than 100 vehicles/wagons or turnover more than 30 crores/annum",
+          licenseType: "Central License",
+          price: "₹15,000",
+        },
+        {
+          id: "transport-state",
+          criteria:
+            "Having up to 100 vehicles/wagons or turnover up to 30 crores/annum",
+          licenseType: "State License",
+          price: "₹7,999",
+        },
+        {
+          id: "transport-registration",
+          criteria: "Turnover up to 12 lakhs/annum",
+          licenseType: "Registration",
+          price: "₹2,999",
+        },
+      ],
+    },
+    {
+      title: "Importer",
+      description:
+        "Importer bringing food products from outside India for sale or distribution.",
+      options: [
+        {
+          id: "importer-central",
+          criteria: "Food importer",
+          licenseType: "Central License",
+          price: "₹15,000",
+        },
+      ],
+    },
+    {
+      title: "Trader/Merchant - Exporter",
+      description:
+        "Food trader, merchant or exporter involved in trading or exporting food products.",
+      options: [
+        {
+          id: "exporter-central",
+          criteria: "Trader / Merchant / Exporter",
+          licenseType: "Central License",
+          price: "₹15,000",
+        },
+      ],
+    },
+    {
+      title: "Hawker (Itinerant / Mobile food vendor)",
+      description:
+        "Mobile food vendor, hawker or itinerant food seller selling food items from temporary/mobile location.",
+      options: [
+        {
+          id: "hawker-registration",
+          criteria: "Mobile food vendor",
           licenseType: "Registration",
           price: "₹2,999",
         },
@@ -106,32 +217,29 @@ export default function App() {
 
     if (service.name === "New FSSAI Registration") {
       setStep("kob");
+      setOpenKob(kobList[0].title);
       setSelectedKobs([]);
     } else {
       setStep("form");
+      setSelectedKobs([]);
     }
 
     setTimeout(() => {
-      document.getElementById("apply")?.scrollIntoView({
-        behavior: "smooth",
-      });
+      document.getElementById("apply")?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   };
 
   const toggleKobOption = (kob, option) => {
-    const alreadySelected = selectedKobs.some(
-      (item) => item.id === option.id
-    );
+    const alreadySelected = selectedKobs.some((item) => item.id === option.id);
 
     if (alreadySelected) {
-      setSelectedKobs(
-        selectedKobs.filter((item) => item.id !== option.id)
-      );
+      setSelectedKobs(selectedKobs.filter((item) => item.id !== option.id));
     } else {
       setSelectedKobs([
         ...selectedKobs,
         {
           kobTitle: kob.title,
+          description: kob.description,
           ...option,
         },
       ]);
@@ -140,10 +248,9 @@ export default function App() {
 
   const proceedToEligibility = () => {
     if (selectedKobs.length === 0) {
-      alert("Please select at least one option.");
+      alert("Please select at least one KOB option first.");
       return;
     }
-
     setStep("eligibility");
   };
 
@@ -154,29 +261,38 @@ export default function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const kobText = selectedKobs
+    const selectedKobText = selectedKobs
       .map(
         (item, index) =>
-          `${index + 1}. ${item.kobTitle}
+          `${index + 1}. KOB: ${item.kobTitle}
 Criteria: ${item.criteria}
 License Type: ${item.licenseType}
 Price: ${item.price}`
       )
       .join("\n\n");
 
+    const price =
+      selectedService.name === "New FSSAI Registration"
+        ? selectedKobs.map((item) => item.price).join(", ")
+        : selectedService.price;
+
     const whatsappMessage = `New Application
 
 Service: ${selectedService.name}
 
-${kobText}
+${
+  selectedService.name === "New FSSAI Registration"
+    ? selectedKobText
+    : `Price: ${price}`
+}
 
 Client Details:
 Name: ${formData.name}
 Phone: ${formData.phone}
-Email: ${formData.email}
+Email: ${formData.email || "-"}
 Business Name: ${formData.businessName}
 Address: ${formData.address}
-Message: ${formData.message}`;
+Message: ${formData.message || "-"}`;
 
     window.open(
       `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
@@ -189,52 +305,58 @@ Message: ${formData.message}`;
   return (
     <div className="site">
       <style>{`
-        * {
-          box-sizing: border-box;
+        * { box-sizing: border-box; }
+
+        html, body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          overflow-x: hidden;
         }
 
-        body {
-          margin: 0;
+        .site {
           font-family: Arial, sans-serif;
+          color: #102A43;
+          width: 100%;
+          overflow-x: hidden;
         }
 
         .header {
           background: white;
           padding: 15px 8%;
           display: flex;
-          justify-content: space-between;
           align-items: center;
+          justify-content: space-between;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.08);
           position: sticky;
           top: 0;
           z-index: 50;
-          box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
-        .logo {
-          height: 70px;
-        }
+        .logo { height: 70px; }
 
         .nav {
           display: flex;
-          gap: 25px;
+          gap: 24px;
+          font-weight: 600;
         }
 
         .nav a {
-          text-decoration: none;
           color: #0F3D73;
-          font-weight: 700;
+          text-decoration: none;
         }
 
         .menuIcon {
           display: none;
           font-size: 34px;
           cursor: pointer;
+          color: #0F3D73;
         }
 
         .callBtn {
           background: #F26A1B;
           color: white;
-          padding: 12px 24px;
+          padding: 12px 22px;
           border-radius: 8px;
           text-decoration: none;
           font-weight: 700;
@@ -242,9 +364,9 @@ Message: ${formData.message}`;
 
         .hero {
           padding: 90px 8%;
-          background: linear-gradient(120deg,#FFF7ED,#EAF3FF);
+          background: linear-gradient(120deg, #FFF7ED 0%, #FFFFFF 45%, #EAF3FF 100%);
           display: grid;
-          grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
           gap: 40px;
           align-items: center;
         }
@@ -253,49 +375,93 @@ Message: ${formData.message}`;
           font-size: 56px;
           line-height: 1.1;
           color: #0F3D73;
+          margin-bottom: 20px;
         }
 
         .heroText {
-          color: #475569;
           font-size: 20px;
-          line-height: 1.8;
+          color: #475569;
+          line-height: 1.7;
         }
 
         .primaryBtn {
           display: inline-block;
+          margin: 10px;
           background: #F26A1B;
           color: white;
-          padding: 15px 28px;
-          border-radius: 10px;
+          padding: 14px 28px;
+          border-radius: 8px;
           text-decoration: none;
           font-weight: 800;
-          margin-top: 20px;
+          border: none;
+          cursor: pointer;
         }
 
         .heroCard {
           background: white;
-          border-radius: 20px;
-          padding: 35px;
+          padding: 30px;
+          border-radius: 24px;
+          box-shadow: 0 15px 35px rgba(15,61,115,0.15);
           text-align: center;
-          box-shadow: 0 12px 30px rgba(0,0,0,0.08);
         }
 
         .heroCard img {
-          width: 250px;
+          width: 260px;
           max-width: 100%;
         }
 
+        .section { padding: 70px 8%; }
+
+        .sectionTitle {
+          text-align: center;
+          font-size: 42px;
+          color: #0F3D73;
+        }
+
+        .serviceGrid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 25px;
+          margin-top: 40px;
+        }
+
+        .serviceCard {
+          padding: 30px;
+          border-radius: 18px;
+          background: white;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+          border-top: 5px solid #F26A1B;
+        }
+
+        .smallBtn {
+          background: #0F3D73;
+          color: white;
+          border: none;
+          padding: 12px 22px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: 700;
+        }
+
         .aboutSection {
-          padding: 70px 8%;
           background: #FFF7ED;
+          padding: 80px 8%;
         }
 
         .aboutBox {
+          max-width: 950px;
+          margin: auto;
           background: white;
-          padding: 40px;
+          padding: 45px;
           border-radius: 20px;
-          border-left: 5px solid #F26A1B;
-          box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+          box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+          border-left: 6px solid #F26A1B;
+        }
+
+        .aboutText {
+          font-size: 18px;
+          line-height: 1.8;
+          color: #475569;
         }
 
         .applySection {
@@ -304,58 +470,96 @@ Message: ${formData.message}`;
         }
 
         .formBox {
-          background: white;
           max-width: 950px;
           margin: auto;
-          padding: 35px;
-          border-radius: 18px;
+          background: white;
+          padding: 40px;
+          border-radius: 20px;
         }
 
         .inputStyle {
           width: 100%;
           padding: 14px;
-          margin-bottom: 16px;
+          margin-bottom: 18px;
+          border: 1px solid #CBD5E1;
           border-radius: 8px;
-          border: 1px solid #ccc;
+          font-size: 16px;
         }
 
+        .kobItem { margin-bottom: 8px; }
+
         .kobHeader {
-          background: teal;
           color: white;
-          padding: 14px;
-          margin-top: 8px;
+          padding: 12px 18px;
           cursor: pointer;
-          border-radius: 4px;
           display: flex;
           justify-content: space-between;
-          font-weight: bold;
+          gap: 10px;
+          font-weight: 700;
+          border-radius: 4px;
         }
 
         .kobContent {
-          background: linear-gradient(135deg,#1AA37A,#058B84);
+          background: linear-gradient(135deg, #1AA37A, #058B84);
           color: white;
-          padding: 20px;
+          padding: 22px;
+          border-radius: 4px;
+        }
+
+        .tableWrap {
+          width: 100%;
+          overflow-x: auto;
         }
 
         table {
           width: 100%;
-          margin-top: 15px;
           border-collapse: collapse;
+          margin-top: 15px;
         }
 
-        th, td {
+        th {
+          border-bottom: 1px solid rgba(255,255,255,0.6);
           padding: 12px;
+          text-align: left;
+        }
+
+        td {
           border-bottom: 1px solid rgba(255,255,255,0.4);
+          padding: 12px;
         }
 
         .darkBtn {
           background: #1f2937;
           color: white;
-          padding: 12px 20px;
           border: none;
+          padding: 12px 18px;
           border-radius: 6px;
           margin: 5px;
           cursor: pointer;
+          font-weight: 700;
+        }
+
+        .eligibilityTable th {
+          background: #f1f5f9;
+          padding: 14px;
+          text-align: left;
+          border: 1px solid #e5e7eb;
+          color: #102A43;
+        }
+
+        .eligibilityTable td {
+          padding: 14px;
+          border: 1px solid #e5e7eb;
+          color: #102A43;
+        }
+
+        .priceBox {
+          background: #FFF7ED;
+          padding: 15px;
+          border-radius: 10px;
+          margin-bottom: 20px;
+          color: #0F3D73;
+          border: 1px solid #F26A1B;
         }
 
         .submitBtn {
@@ -366,7 +570,8 @@ Message: ${formData.message}`;
           padding: 15px;
           border-radius: 10px;
           font-size: 18px;
-          font-weight: bold;
+          font-weight: 800;
+          cursor: pointer;
         }
 
         .footer {
@@ -377,10 +582,16 @@ Message: ${formData.message}`;
         }
 
         .footerLogo {
-          height: 70px;
+          height: 75px;
           background: white;
           padding: 8px;
           border-radius: 10px;
+        }
+
+        .disclaimer {
+          color: #CBD5E1;
+          max-width: 850px;
+          margin: 20px auto;
         }
 
         .socialBtn {
@@ -396,125 +607,206 @@ Message: ${formData.message}`;
 
         .whatsappFloat {
           position: fixed;
-          bottom: 20px;
-          right: 20px;
-          width: 60px;
-          height: 60px;
+          bottom: 25px;
+          right: 25px;
+          width: 65px;
+          height: 65px;
           background: #25D366;
+          color: white;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
+          font-size: 34px;
           text-decoration: none;
-          font-size: 30px;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+          z-index: 20;
         }
 
-        @media(max-width:768px){
-
-          .menuIcon{
-            display:block;
+        @media (max-width: 768px) {
+          .header {
+            padding: 14px 18px;
+            position: sticky;
           }
 
-          .nav{
-            display:none;
-            flex-direction:column;
-            position:absolute;
-            top:85px;
-            left:0;
-            width:100%;
-            background:white;
-            padding:20px;
+          .logo { height: 52px; }
+
+          .menuIcon { display: block; }
+
+          .nav {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 82px;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+            z-index: 100;
           }
 
-          .nav.showMenu{
-            display:flex;
+          .nav.showMenu { display: flex; }
+
+          .nav a {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
           }
 
-          .callBtn{
-            display:none;
+          .callBtn { display: none; }
+
+          .hero {
+            padding: 45px 18px;
+            grid-template-columns: 1fr;
+            text-align: center;
           }
 
-          .hero{
-            padding:50px 18px;
-            text-align:center;
+          .heroTitle {
+            font-size: 34px;
+            line-height: 1.2;
           }
 
-          .heroTitle{
-            font-size:36px;
+          .heroText {
+            font-size: 16px;
           }
 
-          .formBox{
-            padding:20px;
+          .section { padding: 45px 16px; }
+
+          .sectionTitle { font-size: 30px; }
+
+          .serviceGrid { grid-template-columns: 1fr; }
+
+          .aboutSection { padding: 45px 16px; }
+
+          .aboutBox { padding: 24px; }
+
+          .formBox {
+            padding: 18px;
+            border-radius: 14px;
           }
 
-          table{
-            min-width:650px;
+          .kobHeader {
+            font-size: 13px;
+            padding: 12px;
+          }
+
+          .kobContent {
+            padding: 14px;
+            font-size: 14px;
+          }
+
+          table { min-width: 650px; }
+
+          th, td {
+            font-size: 13px;
+            padding: 10px;
+          }
+
+          .primaryBtn,
+          .darkBtn {
+            width: 100%;
+            margin: 8px 0;
+            text-align: center;
+          }
+
+          .whatsappFloat {
+            width: 55px;
+            height: 55px;
+            font-size: 28px;
+            bottom: 18px;
+            right: 18px;
           }
         }
       `}</style>
 
       <header className="header">
-        <img src="/logo.jpeg" alt="Logo" className="logo" />
+        <img src="/logo.jpeg" alt="RegFast India" className="logo" />
 
         <div className="menuIcon" onClick={() => setMobileMenu(!mobileMenu)}>
           ☰
         </div>
 
         <nav className={`nav ${mobileMenu ? "showMenu" : ""}`}>
-          <a href="#">Home</a>
-          <a href="#apply">Services</a>
-          <a href="#about">About</a>
-          <a href="#apply">Apply</a>
-          <a href="#contact">Contact</a>
+          <a href="#" onClick={() => setMobileMenu(false)}>Home</a>
+          <a href="#services" onClick={() => setMobileMenu(false)}>Services</a>
+          <a href="#about" onClick={() => setMobileMenu(false)}>About</a>
+          <a href="#apply" onClick={() => setMobileMenu(false)}>Apply</a>
+          <a href="#contact" onClick={() => setMobileMenu(false)}>Contact</a>
         </nav>
 
-        <a href="#apply" className="callBtn">
+        <a href="#services" className="callBtn">
           Apply Now
         </a>
       </header>
 
       <section className="hero">
         <div>
-          <p style={{ color: "#F26A1B", fontWeight: "800" }}>
+          <p style={{ color: "#F26A1B", fontWeight: "800", letterSpacing: "2px" }}>
             PRIVATE CONSULTANCY SERVICES
           </p>
 
           <h1 className="heroTitle">
-            Business Registration & Compliance{" "}
-            <span style={{ color: "#F26A1B" }}>Services</span>
+            Business Registration <br />
+            & Compliance <span style={{ color: "#F26A1B" }}>Services</span>
           </h1>
 
           <p className="heroText">
-            Fast and trusted support for FSSAI registration,
-            renewal, modification, water testing report and
-            website designing.
+            Fast and trusted support for FSSAI registration, renewal,
+            modification, water testing report and website designing.
           </p>
 
-          <a href="#apply" className="primaryBtn">
-            Apply Now
+          <a href="#services" className="primaryBtn">
+            View Services
           </a>
         </div>
 
         <div className="heroCard">
           <img src="/logo.jpeg" alt="Logo" />
-          <h2 style={{ color: "#0F3D73" }}>
-            Fast & Trusted Registration Services
-          </h2>
+          <h2 style={{ color: "#0F3D73" }}>Fast & Trusted Registration Services</h2>
+        </div>
+      </section>
+
+      <section id="services" className="section">
+        <h2 className="sectionTitle">
+          Our <span style={{ color: "#F26A1B" }}>Services</span>
+        </h2>
+
+        <div className="serviceGrid">
+          {services.map((service, index) => (
+            <div key={index} className="serviceCard">
+              <h3 style={{ color: "#0F3D73" }}>{service.name}</h3>
+              <p style={{ color: "#64748b" }}>
+                Professional application and documentation assistance.
+              </p>
+
+              <button
+                type="button"
+                onClick={() => chooseService(service)}
+                className="smallBtn"
+              >
+                Apply Now
+              </button>
+            </div>
+          ))}
         </div>
       </section>
 
       <section id="about" className="aboutSection">
         <div className="aboutBox">
-          <h2 style={{ color: "#0F3D73" }}>
+          <h2 style={{ color: "#0F3D73", fontSize: "38px" }}>
             About <span style={{ color: "#F26A1B" }}>RegFast India</span>
           </h2>
 
-          <p style={{ lineHeight: "1.8", color: "#475569" }}>
-            RegFast India is a private consultancy service provider
-            offering support for FSSAI services,
-            documentation assistance, water testing reports
-            and website designing.
+          <p className="aboutText">
+            RegFast India is a private consultancy service provider offering
+            support for FSSAI services, documentation assistance, water testing
+            reports and website designing.
+          </p>
+
+          <p className="aboutText">
+            We are not affiliated with any government authority. We only provide
+            private consultancy and documentation support services.
           </p>
         </div>
       </section>
@@ -529,60 +821,60 @@ Message: ${formData.message}`;
             className="inputStyle"
             value={selectedService.name}
             onChange={(e) => {
-              const service = services.find(
-                (s) => s.name === e.target.value
-              );
+              const service = services.find((s) => s.name === e.target.value);
               chooseService(service);
             }}
           >
             {services.map((service, index) => (
-              <option key={index}>{service.name}</option>
+              <option key={index} value={service.name}>
+                {service.name}
+              </option>
             ))}
           </select>
 
-          {selectedService.name === "New FSSAI Registration" &&
-            step === "kob" && (
-              <>
-                <h2 style={{ textAlign: "center" }}>
-                  Kind Of Business (KOB)
-                </h2>
+          {selectedService.name === "New FSSAI Registration" && step === "kob" && (
+            <>
+              <h2 style={{ textAlign: "center", color: "#0F3D73" }}>
+                Kind Of Business <span style={{ color: "#49A9BD" }}>(KOB)</span>
+              </h2>
 
-                {kobList.map((kob, index) => (
-                  <div key={index}>
-                    <div
-                      className="kobHeader"
-                      onClick={() =>
-                        setOpenKob(
-                          openKob === kob.title ? "" : kob.title
-                        )
-                      }
-                    >
-                      <span>{kob.title}</span>
-                      <span>
-                        {openKob === kob.title ? "⌃" : "⌄"}
-                      </span>
-                    </div>
+              {kobList.map((kob, index) => (
+                <div key={index} className="kobItem">
+                  <div
+                    onClick={() =>
+                      setOpenKob(openKob === kob.title ? "" : kob.title)
+                    }
+                    className="kobHeader"
+                    style={{
+                      background: openKob === kob.title ? "#b91c1c" : "#08796f",
+                    }}
+                  >
+                    <span>{kob.title}</span>
+                    <span>{openKob === kob.title ? "⌃" : "⌄"}</span>
+                  </div>
 
-                    {openKob === kob.title && (
-                      <div className="kobContent">
-                        <h3>Description</h3>
-                        <p>{kob.description}</p>
+                  {openKob === kob.title && (
+                    <div className="kobContent">
+                      <h3>Description</h3>
+                      <p>{kob.description}</p>
 
+                      <h3>Fees per Annum / Criteria / Certificate Validity :</h3>
+
+                      <div className="tableWrap">
                         <table>
                           <thead>
                             <tr>
                               <th>Criteria</th>
-                              <th>License Type</th>
+                              <th>License Type / Registration</th>
                               <th>1 Year</th>
                             </tr>
                           </thead>
 
                           <tbody>
                             {kob.options.map((option) => {
-                              const isSelected =
-                                selectedKobs.some(
-                                  (item) => item.id === option.id
-                                );
+                              const isSelected = selectedKobs.some(
+                                (item) => item.id === option.id
+                              );
 
                               return (
                                 <tr key={option.id}>
@@ -593,9 +885,7 @@ Message: ${formData.message}`;
                                     <input
                                       type="checkbox"
                                       checked={isSelected}
-                                      onChange={() =>
-                                        toggleKobOption(kob, option)
-                                      }
+                                      onChange={() => toggleKobOption(kob, option)}
                                     />
                                   </td>
                                 </tr>
@@ -604,122 +894,162 @@ Message: ${formData.message}`;
                           </tbody>
                         </table>
                       </div>
-                    )}
-                  </div>
-                ))}
+                    </div>
+                  )}
+                </div>
+              ))}
 
-                <div style={{ textAlign: "center", marginTop: "20px" }}>
-                  <button
-                    className="darkBtn"
-                    onClick={() => setSelectedKobs([])}
-                  >
-                    Clear All Selected KOB
-                  </button>
+              <div style={{ textAlign: "center", marginTop: "25px" }}>
+                <button
+                  type="button"
+                  className="darkBtn"
+                  onClick={() => setSelectedKobs([])}
+                >
+                  Clear All Selected KOB
+                </button>
 
+                <button
+                  type="button"
+                  className="darkBtn"
+                  onClick={proceedToEligibility}
+                >
+                  Proceed
+                </button>
+              </div>
+            </>
+          )}
+
+          {selectedService.name === "New FSSAI Registration" &&
+            step === "eligibility" &&
+            selectedKobs.length > 0 && (
+              <div>
+                <h2 style={{ textAlign: "center", color: "#0F3D73" }}>
+                  View Eligibility
+                </h2>
+
+                <p style={{ textAlign: "center", color: "#64748b" }}>
+                  After assessment of kind of business selected, you are eligible for:
+                </p>
+
+                <div className="tableWrap">
+                  <table className="eligibilityTable">
+                    <thead>
+                      <tr>
+                        <th>SL No</th>
+                        <th>Kind of Business</th>
+                        <th>License Category</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {selectedKobs.map((item, index) => (
+                        <tr key={item.id}>
+                          <td>{index + 1}</td>
+                          <td>{item.kobTitle}</td>
+                          <td>{item.licenseType}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style={{ textAlign: "center", marginTop: "25px" }}>
                   <button
-                    className="darkBtn"
-                    onClick={proceedToEligibility}
+                    type="button"
+                    className="primaryBtn"
+                    onClick={proceedToForm}
                   >
-                    Proceed
+                    Click here to proceed
                   </button>
                 </div>
-              </>
+              </div>
             )}
-
-          {step === "eligibility" && (
-            <div style={{ textAlign: "center" }}>
-              <h2>View Eligibility</h2>
-
-              <button
-                className="primaryBtn"
-                onClick={proceedToForm}
-              >
-                Click here to proceed
-              </button>
-            </div>
-          )}
 
           {step === "form" && (
             <form onSubmit={handleSubmit}>
+              <div className="priceBox">
+                <b>Selected Service:</b> {selectedService.name}
+                <br />
+
+                {selectedService.name === "New FSSAI Registration" &&
+                  selectedKobs.length > 0 && (
+                    <>
+                      <b>Selected KOB:</b>{" "}
+                      {selectedKobs.map((item) => item.kobTitle).join(", ")}
+                      <br />
+                      <b>License Type:</b>{" "}
+                      {selectedKobs.map((item) => item.licenseType).join(", ")}
+                      <br />
+                    </>
+                  )}
+
+                <b>Service Fee:</b>{" "}
+                {selectedService.name === "New FSSAI Registration"
+                  ? selectedKobs.map((item) => item.price).join(", ")
+                  : selectedService.price}
+              </div>
+
               <input
-                className="inputStyle"
                 placeholder="Full Name"
                 required
+                className="inputStyle"
                 value={formData.name}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    name: e.target.value,
-                  })
+                  setFormData({ ...formData, name: e.target.value })
                 }
               />
 
               <input
-                className="inputStyle"
-                placeholder="Phone Number"
+                placeholder="Mobile Number"
                 required
+                className="inputStyle"
                 value={formData.phone}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phone: e.target.value,
-                  })
+                  setFormData({ ...formData, phone: e.target.value })
                 }
               />
 
               <input
+                placeholder="Email Address"
                 className="inputStyle"
-                placeholder="Email"
                 value={formData.email}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    email: e.target.value,
-                  })
+                  setFormData({ ...formData, email: e.target.value })
                 }
               />
 
               <input
-                className="inputStyle"
-                placeholder="Business Name"
+                placeholder="Business / Firm Name"
                 required
+                className="inputStyle"
                 value={formData.businessName}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    businessName: e.target.value,
-                  })
+                  setFormData({ ...formData, businessName: e.target.value })
                 }
               />
 
               <textarea
-                rows="4"
-                className="inputStyle"
                 placeholder="Address"
                 required
+                rows="4"
+                className="inputStyle"
                 value={formData.address}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    address: e.target.value,
-                  })
+                  setFormData({ ...formData, address: e.target.value })
                 }
               />
 
               <textarea
+                placeholder="Message / Requirement"
                 rows="4"
                 className="inputStyle"
-                placeholder="Message"
                 value={formData.message}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    message: e.target.value,
-                  })
+                  setFormData({ ...formData, message: e.target.value })
                 }
               />
 
-              <button className="submitBtn">
+              <button type="submit" className="submitBtn">
                 Submit Application on WhatsApp
               </button>
             </form>
@@ -730,12 +1060,9 @@ Message: ${formData.message}`;
       <footer id="contact" className="footer">
         <img src="/logo.jpeg" alt="Logo" className="footerLogo" />
 
-        <p>
-          WhatsApp: +91 9322705535 |
-          Email: Regfastindia@gmail.com
-        </p>
+        <p>WhatsApp: +91 9322705535 | Email: Regfastindia@gmail.com</p>
 
-        <div>
+        <div style={{ marginTop: "15px" }}>
           <a
             href="https://www.instagram.com/regfastindia?igsh=c2o4Y3FlZmg5Zm45"
             target="_blank"
@@ -754,16 +1081,22 @@ Message: ${formData.message}`;
             Facebook
           </a>
         </div>
+
+        <p className="disclaimer">
+          Disclaimer: We are a private consultancy service provider and are not
+          affiliated with any government authority. We assist customers with
+          application, documentation and online service support.
+        </p>
       </footer>
 
       <a
         href="https://wa.me/919322705535"
-        className="whatsappFloat"
         target="_blank"
         rel="noreferrer"
+        className="whatsappFloat"
       >
         💬
       </a>
     </div>
   );
-} 
+}
